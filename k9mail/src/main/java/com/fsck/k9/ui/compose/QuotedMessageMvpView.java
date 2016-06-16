@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mailstore.AttachmentResourceProvider;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
@@ -117,8 +119,9 @@ public class QuotedMessageMvpView {
         mFontSizes.setViewTextSize(mQuotedText, fontSize);
     }
 
-    public void setQuotedHtml(String quotedContent) {
-        mQuotedHTML.setText(quotedContent);
+    public void setQuotedHtml(String quotedContent, Part rootPart) {
+        AttachmentResourceProvider attachmentResourceProvider = new AttachmentResourceProvider(rootPart);
+        mQuotedHTML.setText(quotedContent, attachmentResourceProvider);
     }
 
     public void setQuotedText(String quotedText) {

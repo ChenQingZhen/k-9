@@ -131,7 +131,7 @@ public class QuotedMessagePresenter {
                     resources, sourceMessage, content, quoteStyle);
 
             // Load the message with the reply header.
-            view.setQuotedHtml(quotedHtmlContent.getQuotedContent());
+            view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), sourceMessage);
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, sourceMessage,
@@ -173,7 +173,8 @@ public class QuotedMessagePresenter {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         quotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
         if (quotedHtmlContent != null && quotedHtmlContent.getQuotedContent() != null) {
-            view.setQuotedHtml(quotedHtmlContent.getQuotedContent());
+            // we don't have the part here, but inline-displayed images are cached by the webview
+            view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), null);
         }
         quotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
                 STATE_KEY_QUOTED_TEXT_FORMAT);
@@ -293,7 +294,7 @@ public class QuotedMessagePresenter {
                     } else {
                         quotedHtmlContent.setFooterInsertionPoint(bodyOffset);
                     }
-                    view.setQuotedHtml(quotedHtmlContent.getQuotedContent());
+                    view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), message);
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {
